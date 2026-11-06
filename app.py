@@ -161,8 +161,11 @@ class Studio:
             with zipfile.ZipFile(path) as z:
                 for name in z.namelist():
                     if name.startswith("assets/") and name.lower().endswith(".png"):
-                        try:self.assets[name]=Image.open(io.BytesIO(z.read(name))).convert("RGBA"); n+=1
-                    except Exception:pass
+                        try:
+                            self.assets[name]=Image.open(io.BytesIO(z.read(name))).convert("RGBA")
+                            n+=1
+                        except Exception:
+                            pass
                 if "pack.mcmeta" in z.namelist():
                     meta=json.loads(z.read("pack.mcmeta").decode("utf-8")); self.description.set(meta.get("pack",{}).get("description",""))
             self._refresh_grid(); self.status.set(f"리소스팩에서 {n:,}개 텍스처를 불러왔습니다.")
